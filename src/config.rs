@@ -1,0 +1,30 @@
+use std::{error::Error, path::PathBuf};
+
+use serde::{Deserialize, Serialize};
+
+use crate::item::Item;
+
+#[derive(Deserialize, Serialize)]
+pub struct Config {
+    pub items: Vec<Item>,
+}
+
+impl Default for Config {
+    fn default() -> Self {
+        let items = vec![Item::from(
+            "kaworu".to_string(),
+            PathBuf::from("kaworu.toml"),
+            PathBuf::from("~/kaworu.toml"),
+        )];
+        Self { items: items }
+    }
+}
+
+impl Config {
+    pub fn to_toml(&self) -> String {
+        toml::to_string_pretty(&self).expect("Couldn't convert config struct to toml")
+    }
+    pub fn from_toml(text: String) -> Result<Self, Box<dyn Error>> {
+        Ok(toml::from_str::<Config>(text.as_str())?)
+    }
+}

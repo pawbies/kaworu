@@ -1,0 +1,14 @@
+[[items]]
+name = "nvim"
+src = "nvim"
+dest = "~/.config/nvim"
+
+[[items]]
+name = "fish"
+src = "fish"
+dest = "~/.config/fish"
+
+[[items]]
+name = "doom"
+src = "doom"
+dest = "~/.config/doom"
