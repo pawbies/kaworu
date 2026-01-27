@@ -1,14 +1,9 @@
 [[items]]
-name = "nvim"
-src = "nvim"
-dest = "~/.config/nvim"
+name = "kaworu"
+src = "kaworu.toml"
+dest = "~/kaworu.toml"
 
 [[items]]
-name = "fish"
-src = "fish"
-dest = "~/.config/fish"
-
-[[items]]
-name = "doom"
-src = "doom"
-dest = "~/.config/doom"
+name = "Baller"
+src = "testi"
+dest = "~/testi"
