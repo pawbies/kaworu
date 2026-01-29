@@ -1,4 +1,4 @@
-use std::{error::Error, path::PathBuf};
+use std::{error::Error, fs::read_to_string, path::PathBuf};
 
 use serde::{Deserialize, Serialize};
 
@@ -26,5 +26,12 @@ impl Config {
     }
     pub fn from_toml(text: String) -> Result<Self, Box<dyn Error>> {
         Ok(toml::from_str::<Config>(text.as_str())?)
+    }
+
+    pub fn from_file(file: String) -> Result<Self, Box<dyn Error>> {
+        let file_contents = read_to_string(file)?;
+        let config = Config::from_toml(file_contents)?;
+
+        Ok(config)
     }
 }

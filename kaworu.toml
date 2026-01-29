@@ -1,9 +1,4 @@
 [[items]]
 name = "kaworu"
 src = "kaworu.toml"
-dest = "~/kaworu.toml"
-
-[[items]]
-name = "Baller"
-src = "testi"
-dest = "~/testi"
+dest = "kaworui.toml"

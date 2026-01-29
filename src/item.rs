@@ -35,4 +35,20 @@ impl Item {
     pub fn cmd_line(&self) -> String {
         "Still Testing".to_string()
     }
+
+    pub fn apply(&self) {
+        #[cfg(unix)]
+        {
+            match std::os::unix::fs::symlink(&self.src, &self.dest) {
+                Ok(_) => {}
+                Err(e) => {
+                    eprintln!("Error: {}", e);
+                }
+            }
+        }
+        #[cfg(windows)]
+        {
+            //TODO: idk maybe implement this sometime
+        }
+    }
 }

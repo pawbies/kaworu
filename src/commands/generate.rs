@@ -1,7 +1,4 @@
-use std::{
-    fs::{read_to_string, write},
-    process::exit,
-};
+use std::{fs::write, process::exit};
 
 use crate::{
     cli::ScriptFormat::{self, *},
@@ -9,12 +6,7 @@ use crate::{
 };
 
 pub fn run(format: ScriptFormat) {
-    let file_contents = read_to_string("kaworu.toml").unwrap_or_else(|e| {
-        eprintln!("Error: {}", e);
-        exit(1);
-    });
-
-    let config = match Config::from_toml(file_contents) {
+    let config = match Config::from_file("kaworu.toml".to_string()) {
         Ok(config) => config,
         Err(e) => {
             eprintln!("Error: {}", e);
