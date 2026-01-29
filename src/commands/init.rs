@@ -1,12 +1,12 @@
 use std::{fs, io::ErrorKind, process::Command};
 
-use crate::config::Config;
+use crate::{config::Config, constants::DEFAULT_CONFIG_NAME};
 
 pub fn run(skip_git: bool) {
-    match fs::exists("kaworu.toml") {
+    match fs::exists(DEFAULT_CONFIG_NAME) {
         Ok(b) => {
             if b {
-                println!("kaworu.toml already in directory")
+                println!("{} already in directory", DEFAULT_CONFIG_NAME);
             } else {
                 init_kaworu_repo();
             }
@@ -20,11 +20,11 @@ pub fn run(skip_git: bool) {
 
 fn init_kaworu_repo() {
     let sample_toml = Config::default().to_toml();
-    match fs::write("kaworu.toml", &sample_toml) {
-        Ok(_) => println!("Wrote kaworu.toml"),
+    match fs::write(DEFAULT_CONFIG_NAME, &sample_toml) {
+        Ok(_) => println!("Wrote {}", DEFAULT_CONFIG_NAME),
         Err(e) => match e.kind() {
             ErrorKind::PermissionDenied => eprintln!("Error: permission denied"),
-            ErrorKind::AlreadyExists => eprintln!("Error: kaworu.toml already exists"),
+            ErrorKind::AlreadyExists => eprintln!("Error: {} already exists", DEFAULT_CONFIG_NAME),
             _ => eprintln!("Error: {e}"),
         },
     }

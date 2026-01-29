@@ -2,7 +2,7 @@ use std::{error::Error, fs::read_to_string, path::PathBuf};
 
 use serde::{Deserialize, Serialize};
 
-use crate::item::Item;
+use crate::{constants::DEFAULT_CONFIG_NAME, item::Item};
 
 #[derive(Deserialize, Serialize)]
 pub struct Config {
@@ -13,8 +13,8 @@ impl Default for Config {
     fn default() -> Self {
         let items = vec![Item::from(
             "kaworu".to_string(),
-            PathBuf::from("kaworu.toml"),
-            PathBuf::from("kaworu_link.toml"),
+            PathBuf::from(DEFAULT_CONFIG_NAME),
+            PathBuf::from("symlink.toml"),
         )];
         Self { items: items }
     }

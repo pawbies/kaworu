@@ -8,6 +8,7 @@ use crate::{
 mod cli;
 mod commands;
 mod config;
+mod constants;
 mod item;
 
 fn main() {
