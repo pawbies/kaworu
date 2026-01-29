@@ -14,7 +14,7 @@ impl Default for Config {
         let items = vec![Item::from(
             "kaworu".to_string(),
             PathBuf::from("kaworu.toml"),
-            PathBuf::from("~/kaworu.toml"),
+            PathBuf::from("kaworu_link.toml"),
         )];
         Self { items: items }
     }
