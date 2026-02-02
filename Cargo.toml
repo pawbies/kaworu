@@ -2,19 +2,21 @@
 name = "kaworu"
 version = "0.1.0"
 edition = "2024"
+rust-version = "1.93"
 description = "Config file manager"
+readme = "README.md"
 license = "MIT"
 repository = "https://github.com/pawbies/kaworu"
 keywords = ["cli", "symlink", "config"]
 categories = ["command-line-utilities"]
 
 [profile.release]
-opt-level = 5
+opt-level = 3
 lto = "thin"
 strip = true
 
 [dependencies]
-clap = { version = "4.5.54", features = ["derive"] }
-serde = { version = "1.0.228", features = ["derive"] }
-shellexpand = "3.1.1"
-toml = "0.9.11"
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+shellexpand = "3"
+toml = "0.9"
