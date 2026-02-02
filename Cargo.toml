@@ -2,6 +2,16 @@
 name = "kaworu"
 version = "0.1.0"
 edition = "2024"
+description = "Config file manager"
+license = "MIT"
+repository = "https://github.com/pawbies/kaworu"
+keywords = ["cli", "symlink", "config"]
+categories = ["command-line-utilities"]
+
+[profile.release]
+opt-level = 5
+lto = "thin"
+strip = true
 
 [dependencies]
 clap = { version = "4.5.54", features = ["derive"] }
