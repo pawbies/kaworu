@@ -1,0 +1,4 @@
+[[items]]
+name = "kaworu"
+src = ".kaworu.toml"
+dest = "symlink.toml"

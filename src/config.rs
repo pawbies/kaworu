@@ -1,4 +1,4 @@
-use std::{error::Error, fs::read_to_string};
+use std::{error::Error, fs::read_to_string, path::PathBuf};
 
 use serde::{Deserialize, Serialize};
 
@@ -11,11 +11,11 @@ pub struct Config {
 
 impl Default for Config {
     fn default() -> Self {
-        let items = vec![Item::from(
-            "kaworu".to_string(),
-            DEFAULT_CONFIG_NAME.to_string(),
-            "symlink.toml".to_string(),
-        )];
+        let items = vec![Item {
+            name: "kaworu".to_string(),
+            src: PathBuf::from(DEFAULT_CONFIG_NAME),
+            dest: PathBuf::from("symlink.toml"),
+        }];
         Self { items: items }
     }
 }

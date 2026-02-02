@@ -1,4 +1,10 @@
-use std::{fs::canonicalize, os::unix, path::PathBuf, process::exit};
+use std::{
+    error::Error,
+    fs::canonicalize,
+    os::unix,
+    path::{PathBuf, absolute},
+    process::exit,
+};
 
 use serde::{Deserialize, Serialize};
 use shellexpand;
@@ -11,14 +17,6 @@ pub struct Item {
 }
 
 impl Item {
-    pub fn from(name: String, src: String, dest: String) -> Self {
-        Self {
-            name,
-            src: PathBuf::from(src),
-            dest: PathBuf::from(dest),
-        }
-    }
-
     pub fn bash_line(&self) -> String {
         format!(
             "ln -s {} {} #{}",
@@ -70,62 +68,60 @@ impl Item {
     }
 
     pub fn expanded_src_path(&self) -> PathBuf {
-        // TODO: Better error handling
-        match shellexpand::full(&self.src.to_str().expect("Internal error")) {
-            Ok(path) => PathBuf::from(path.to_string()),
+        match expanded_path(&self.src) {
+            Ok(path) => path,
             Err(e) => {
-                eprintln!(
-                    "Couldn't expand path {}: {}",
-                    &self.src.to_str().expect("Internal error"),
-                    e
-                );
+                eprintln!("Couldn't expand source path for {}: {}", self.name, e);
                 exit(1);
             }
         }
     }
 
     pub fn expanded_dest_path(&self) -> PathBuf {
-        // TODO: Better error handling
-        match shellexpand::full(&self.dest.to_str().expect("Internal error")) {
-            Ok(path) => PathBuf::from(path.to_string()),
+        match expanded_path(&self.dest) {
+            Ok(path) => path,
             Err(e) => {
-                eprintln!(
-                    "Couldn't expand path {}: {}",
-                    &self.dest.to_str().expect("Internal error"),
-                    e
-                );
+                eprintln!("Couldn't expand destination path for {}: {}", self.name, e);
                 exit(1);
             }
         }
     }
 
     pub fn expanded_absolute_src_path(&self) -> PathBuf {
-        let path = self.expanded_src_path();
-        if path.is_relative() {
-            match canonicalize(path) {
-                Ok(path) => path,
-                Err(e) => {
-                    eprintln!("Error parsing source path for {}: {}", self.name, e);
-                    exit(1);
-                }
+        match absolute_path(&self.expanded_src_path(), true) {
+            Ok(path) => path,
+            Err(e) => {
+                eprintln!("Error parsing source path for {}: {}", self.name, e);
+                exit(1);
             }
-        } else {
-            path
         }
     }
 
     pub fn expanded_absolute_dest_path(&self) -> PathBuf {
-        let path = self.expanded_dest_path();
-        if path.is_relative() {
-            match canonicalize(path) {
-                Ok(path) => path,
-                Err(e) => {
-                    eprintln!("Error parsing destination path for {}: {}", self.name, e);
-                    exit(1);
-                }
+        match absolute_path(&self.expanded_dest_path(), false) {
+            Ok(path) => path,
+            Err(e) => {
+                eprintln!("Error parsing destination path for {}: {}", self.name, e);
+                exit(1);
             }
-        } else {
-            path
         }
+    }
+}
+
+fn expanded_path(path: &PathBuf) -> Result<PathBuf, Box<dyn Error>> {
+    Ok(shellexpand::full(path.to_str().expect("Internal error"))?
+        .to_string()
+        .into())
+}
+
+fn absolute_path(path: &PathBuf, require_existence: bool) -> std::io::Result<PathBuf> {
+    if path.is_relative() {
+        if require_existence {
+            canonicalize(path)
+        } else {
+            absolute(path)
+        }
+    } else {
+        Ok(path.clone())
     }
 }

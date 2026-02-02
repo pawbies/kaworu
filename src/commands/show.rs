@@ -11,12 +11,15 @@ pub fn run() {
         }
     };
 
+    // TODO: Error handling
     for item in config.items {
         println!(
-            "{}: {} -> {}",
+            "{}: {} ({}) -> {} ({})",
             item.name,
-            item.expanded_src_path().to_str().unwrap(),
-            item.expanded_dest_path().to_str().unwrap()
+            item.expanded_absolute_src_path().to_str().unwrap(),
+            item.src.to_str().unwrap(),
+            item.expanded_absolute_dest_path().to_str().unwrap(),
+            item.dest.to_str().unwrap()
         );
     }
 }
