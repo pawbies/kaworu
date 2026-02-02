@@ -50,7 +50,6 @@ impl Item {
     pub fn apply(&self) {
         #[cfg(unix)]
         {
-            // TODO: check paths
             match unix::fs::symlink(
                 &self.expanded_absolute_src_path(),
                 &self.expanded_absolute_dest_path(),
