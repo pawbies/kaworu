@@ -41,4 +41,9 @@ mod test {
     fn add() {
         assert_eq!(1 + 1, 2);
     }
+
+    #[test]
+    fn subtract() {
+        assert_eq!(1 - 1, 0);
+    }
 }
