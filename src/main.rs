@@ -34,3 +34,11 @@ fn run() -> Result<(), Error> {
         Commands::Apply => apply::run(),
     }
 }
+
+#[cfg(test)]
+mod test {
+    #[test]
+    fn add() {
+        assert_eq!(1 + 1, 2);
+    }
+}
