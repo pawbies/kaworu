@@ -16,6 +16,7 @@ lto = "thin"
 strip = true
 
 [dependencies]
+anyhow = "1"
 clap = { version = "4", features = ["derive"] }
 serde = { version = "1", features = ["derive"] }
 shellexpand = "3"

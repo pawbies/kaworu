@@ -1,4 +1,6 @@
-use std::{fs::write, process::exit};
+use std::fs::write;
+
+use anyhow::{Error, anyhow};
 
 use crate::{
     cli::ScriptFormat::{self, *},
@@ -6,14 +8,8 @@ use crate::{
     constants::DEFAULT_CONFIG_NAME,
 };
 
-pub fn run(format: ScriptFormat) {
-    let config = match Config::from_file(DEFAULT_CONFIG_NAME.to_string()) {
-        Ok(config) => config,
-        Err(e) => {
-            eprintln!("Error: {}", e);
-            exit(1);
-        }
-    };
+pub fn run(format: ScriptFormat) -> Result<(), Error> {
+    let config = Config::from_file(DEFAULT_CONFIG_NAME.to_string())?;
 
     let script: String = match format {
         Bash => config
@@ -32,16 +28,18 @@ pub fn run(format: ScriptFormat) {
             .map(|item| item.cmd_line() + "\n")
             .collect(),
     };
+
     let file_name = match format {
         Bash => "kaworu.sh",
         Powershell => "kaworu.ps",
         CMD => "kaworu.cmd",
     };
+
     match write(file_name, script) {
-        Ok(_) => {}
-        Err(e) => {
-            eprintln!("Error: {}", e);
-            exit(1);
+        Ok(_) => {
+            println!("Wrote {}", file_name);
+            Ok(())
         }
+        Err(e) => Err(anyhow!(e)),
     }
 }

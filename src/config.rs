@@ -1,5 +1,6 @@
-use std::{error::Error, fs::read_to_string, path::PathBuf};
+use std::{fs::read_to_string, path::PathBuf};
 
+use anyhow::Error;
 use serde::{Deserialize, Serialize};
 
 use crate::{constants::DEFAULT_CONFIG_NAME, item::Item};
@@ -16,7 +17,7 @@ impl Default for Config {
             src: PathBuf::from(DEFAULT_CONFIG_NAME),
             dest: PathBuf::from("symlink.toml"),
         }];
-        Self { items: items }
+        Self { items }
     }
 }
 
@@ -24,11 +25,11 @@ impl Config {
     pub fn to_toml(&self) -> String {
         toml::to_string_pretty(&self).expect("Couldn't convert config struct to toml")
     }
-    pub fn from_toml(text: String) -> Result<Self, Box<dyn Error>> {
+    pub fn from_toml(text: String) -> Result<Self, Error> {
         Ok(toml::from_str::<Config>(text.as_str())?)
     }
 
-    pub fn from_file(file: String) -> Result<Self, Box<dyn Error>> {
+    pub fn from_file(file: String) -> Result<Self, Error> {
         let file_contents = read_to_string(file)?;
         let config = Config::from_toml(file_contents)?;
 

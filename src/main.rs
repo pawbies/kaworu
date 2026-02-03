@@ -1,3 +1,6 @@
+use std::process::exit;
+
+use anyhow::Error;
 use clap::Parser;
 
 use crate::{
@@ -12,6 +15,16 @@ mod constants;
 mod item;
 
 fn main() {
+    match run() {
+        Ok(_) => {}
+        Err(e) => {
+            eprintln!("Error: {}", e);
+            exit(1);
+        }
+    }
+}
+
+fn run() -> Result<(), Error> {
     let cli = Cli::parse();
 
     match cli.command {
