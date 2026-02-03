@@ -2,6 +2,8 @@
 
 A config file manager that generates symlinks to the right config folders. Keep your dotfiles in one place, deploy them anywhere.
 
+![crates banner](https://static.crates.io/og-images/kaworu.png)
+
 ## Install
 
 ```
